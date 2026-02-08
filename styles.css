@@ -45,8 +45,8 @@ header {
 }
 
 .site-logo {
-    width: 250px;
-    height: 250px;
+    width: 50px;
+    height: 50px;
     object-fit: contain;
     border-radius: 50%;
     box-shadow: 0 3px 10px rgba(0, 212, 170, 0.3);
@@ -270,6 +270,38 @@ header h1 {
     padding: 5px 15px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+/* إعلانات */
+.ad-banner {
+    background: var(--bg-card);
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: center;
+    border: 1px solid rgba(0, 212, 170, 0.2);
+}
+
+.ad-label {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+}
+
+.ad-link {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.ad-link:hover {
+    transform: scale(1.02);
+}
+
+.ad-image {
+    max-width: 100%;
+    height: auto;
+    max-height: 100px;
+    border-radius: 10px;
 }
 
 footer {
