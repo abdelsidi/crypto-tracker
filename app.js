@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchPrices();
     setInterval(fetchPrices, 60000); // تحديث كل دقيقة
     loadAlerts();
+    initTicker(); // تهيئة شريط الأخبار
 });
 
 // جلب الأسعار من CoinGecko API
@@ -536,6 +537,79 @@ function getMockNews() {
         }
     ];
 }
+
+// ==================== 📢 شريط الأخبار المتحرك ====================
+
+let tickerData = [];
+
+function initTicker() {
+    updateTicker();
+    // تحديث الشريط كل دقيقة
+    setInterval(updateTicker, 60000);
+}
+
+function updateTicker() {
+    const tickerContent = document.getElementById('ticker-content');
+    if (!tickerContent) return;
+    
+    // بيانات الشريط (تجمع بين العملات والأخبار)
+    const tickerItems = generateTickerData();
+    
+    // تكرار البيانات مرتين للتمرير المستمر
+    const doubledItems = [...tickerItems, ...tickerItems];
+    
+    tickerContent.innerHTML = doubledItems.map(item => `
+        <span class="ticker-item">
+            ${item.icon} ${item.text}
+        </span>
+    `).join('');
+}
+
+function generateTickerData() {
+    const items = [];
+    
+    // أسعار العملات الرئيسية
+    if (currentPrices.bitcoin) {
+        const btcChange = currentPrices.bitcoin.usd_24h_change;
+        const btcIcon = btcChange >= 0 ? '📈' : '📉';
+        items.push({
+            icon: btcIcon,
+            text: `BTC $${formatPrice(currentPrices.bitcoin.usd)} (${btcChange >= 0 ? '+' : ''}${btcChange.toFixed(2)}%)`
+        });
+    }
+    
+    if (currentPrices.ethereum) {
+        const ethChange = currentPrices.ethereum.usd_24h_change;
+        const ethIcon = ethChange >= 0 ? '📈' : '📉';
+        items.push({
+            icon: ethIcon,
+            text: `ETH $${formatPrice(currentPrices.ethereum.usd)} (${ethChange >= 0 ? '+' : ''}${ethChange.toFixed(2)}%)`
+        });
+    }
+    
+    // أخبار اقتصادية
+    items.push(
+        { icon: '🌍', text: 'الذهب يرتفع مع تراجع الدولار' },
+        { icon: '🛢️', text: 'أسعار النفط تستقر عند 80$ للبرميل' },
+        { icon: '💵', text: 'الدولار يقوى أمام اليورو' },
+        { icon: '🏦', text: 'الفيدرالي يحافظ على أسعار الفائدة' },
+        { icon: '📊', text: 'مؤشر S&P 500 يحقق أرباحاً جديدة' },
+        { icon: '🪙', text: 'تبني العملات الرقمية يزداد عالمياً' },
+        { icon: '🇨🇳', text: 'الاقتصاد الصيني ينمو بنسبة 5%' },
+        { icon: '🇪🇺', text: 'الاتحاد الأوروبي يبحث تنظيم العملات الرقمية' },
+        { icon: '💰', text: 'الاحتياطي الفيدرالي يبحث خفض التضخم' },
+        { icon: '🚀', text: 'الاستثمار في التقنية يصل لأرقام قياسية' }
+    );
+    
+    return items;
+}
+
+// تحديث الشريط عند تحديث الأسعار
+const originalUpdateUI = updateUI;
+updateUI = function(data) {
+    originalUpdateUI(data);
+    updateTicker();
+};
 
 // ==================== 📊 التحليلات ====================
 
