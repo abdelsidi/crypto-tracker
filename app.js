@@ -1,5 +1,8 @@
 // 🚀 متتبع العملات الرقمية - Crypto Tracker
 
+// 🔑 CoinMarketCap API Key
+const CMC_API_KEY = '5bd8800e37044ed6bacf93a46cdd4dd1';
+
 const COINS = ['bitcoin', 'ethereum', 'binancecoin', 'cardano', 'solana', 'dogecoin', 'shiba-inu', 'pepe', 'floki', 'bonk'];
 const COIN_NAMES = {
     bitcoin: { name: 'بيتكوين', symbol: 'BTC', icon: '₿', type: 'major' },
@@ -27,8 +30,36 @@ document.addEventListener('DOMContentLoaded', () => {
     initTicker(); // تهيئة شريط الأخبار
 });
 
-// جلب الأسعار من CoinGecko API
+// جلب الأسعار من CoinMarketCap API (أو CoinGecko كاحتياطي)
 async function fetchPrices() {
+    try {
+        // محاولة جلب من CoinMarketCap أولاً
+        const cmcResponse = await fetch(
+            `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?slug=${COINS.join(',')}&convert=USD`,
+            {
+                headers: {
+                    'X-CMC_PRO_API_KEY': CMC_API_KEY,
+                    'Accept': 'application/json'
+                }
+            }
+        );
+        
+        if (cmcResponse.ok) {
+            const cmcData = await cmcResponse.json();
+            const formattedData = formatCMCData(cmcData);
+            currentPrices = formattedData;
+            updateUI(formattedData);
+            updateChart(formattedData);
+            checkAlerts(formattedData);
+            document.getElementById('last-update').textContent = new Date().toLocaleTimeString('ar-SA');
+            console.log('✅ Prices fetched from CoinMarketCap');
+            return;
+        }
+    } catch (cmcError) {
+        console.log('⚠️ CoinMarketCap failed, trying CoinGecko...', cmcError);
+    }
+    
+    // الاحتياطي: جلب من CoinGecko
     try {
         const response = await fetch(
             `https://api.coingecko.com/api/v3/simple/price?ids=${COINS.join(',')}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&include_24hr_vol=true`
@@ -37,16 +68,38 @@ async function fetchPrices() {
         if (!response.ok) throw new Error('Failed to fetch');
         
         const data = await response.json();
-        currentPrices = data; // حفظ الأسعار للحاسبة
+        currentPrices = data;
         updateUI(data);
         updateChart(data);
         checkAlerts(data);
         
         document.getElementById('last-update').textContent = new Date().toLocaleTimeString('ar-SA');
+        console.log('✅ Prices fetched from CoinGecko');
     } catch (error) {
         console.error('Error fetching prices:', error);
         showError('تعذر تحديث الأسعار. سنحاول مرة أخرى...');
     }
+}
+
+// تنسيق بيانات CoinMarketCap لتتوافق مع الهيكل الحالي
+function formatCMCData(cmcData) {
+    const formatted = {};
+    
+    if (cmcData.data) {
+        Object.values(cmcData.data).forEach(coin => {
+            const slug = coin.slug;
+            const quote = coin.quote.USD;
+            
+            formatted[slug] = {
+                usd: quote.price,
+                usd_24h_change: quote.percent_change_24h || 0,
+                usd_market_cap: quote.market_cap || 0,
+                usd_24h_vol: quote.volume_24h || 0
+            };
+        });
+    }
+    
+    return formatted;
 }
 
 // تحديث واجهة المستخدم
