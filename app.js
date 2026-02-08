@@ -330,6 +330,21 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+// ==================== 🎯 الإعلان العائم ====================
+
+function toggleFloatingAd() {
+    const ad = document.getElementById('floating-ad');
+    const icon = document.getElementById('ad-toggle-icon');
+    
+    ad.classList.toggle('collapsed');
+    
+    if (ad.classList.contains('collapsed')) {
+        icon.textContent = '+';
+    } else {
+        icon.textContent = '−';
+    }
+}
+
 // ==================== 📰 أخبار العملات الرقمية ====================
 
 let currentNewsTab = 'latest';
