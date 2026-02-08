@@ -19,12 +19,20 @@
             <div class="last-update">آخر تحديث: <span id="last-update">-</span></div>
         </header>
 
-        <div class="ad-banner">
-            <p class="ad-label">إعلان - شريك موثوق</p>
-            <div class="ad-link" onclick="openAdModal()">
-                <img src="ad-bpm.jpg" alt="Banque Populaire de Mauritanie" class="ad-image">
+        <!-- إعلان عائم -->
+        <div class="floating-ad" id="floating-ad">
+            <div class="floating-ad-header" onclick="toggleFloatingAd()">
+                <span class="floating-ad-title">🏦 شريك موثوق</span>
+                <span class="floating-ad-toggle" id="ad-toggle-icon">−</span>
             </div>
-            <p class="ad-hint">اضغط للمزيد من المعلومات</p>
+            <div class="floating-ad-content" id="floating-ad-content">
+                <div class="floating-ad-image" onclick="openAdModal()">
+                    <img src="ad-bpm.jpg" alt="BPM">
+                    <div class="floating-ad-pulse"></div>
+                </div>
+                <p class="floating-ad-text">البنك الشعبي الموريتاني</p>
+                <button class="floating-ad-btn" onclick="openAdModal()">المزيد</button>
+            </div>
         </div>
 
         <!-- نافذة معلومات الإعلان -->
