@@ -20,10 +20,49 @@
         </header>
 
         <div class="ad-banner">
-            <p class="ad-label">إعلان</p>
-            <a href="https://www.bpm.mr/" target="_blank" class="ad-link">
+            <p class="ad-label">إعلان - شريك موثوق</p>
+            <div class="ad-link" onclick="openAdModal()">
                 <img src="ad-bpm.jpg" alt="Banque Populaire de Mauritanie" class="ad-image">
-            </a>
+            </div>
+            <p class="ad-hint">اضغط للمزيد من المعلومات</p>
+        </div>
+
+        <!-- نافذة معلومات الإعلان -->
+        <div id="ad-modal" class="ad-modal">
+            <div class="ad-modal-content">
+                <span class="ad-close" onclick="closeAdModal()">&times;</span>
+                <div class="ad-modal-header">
+                    <img src="ad-bpm.jpg" alt="BPM" class="ad-modal-logo">
+                    <h3>البنك الشعبي الموريتاني</h3>
+                </div>
+                <div class="ad-modal-body">
+                    <div class="ad-info-item">
+                        <span class="ad-icon">📍</span>
+                        <div>
+                            <strong>العنوان:</strong><br>
+                            424G+WCG، Avenue Moktar Ould Daddah<br>
+                            نواكشوط، موريتانيا
+                        </div>
+                    </div>
+                    <div class="ad-info-item">
+                        <span class="ad-icon">⏰</span>
+                        <div>
+                            <strong>أوقات العمل:</strong><br>
+                            يفتح 8:30 صباحاً (السبت - الخميس)
+                        </div>
+                    </div>
+                    <div class="ad-info-item">
+                        <span class="ad-icon">📞</span>
+                        <div>
+                            <strong>الهاتف:</strong><br>
+                            <a href="tel:+22225000870">+222 25 00 08 70</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-modal-footer">
+                    <a href="https://www.bpm.mr/" target="_blank" class="ad-visit-btn">زيارة الموقع الرسمي</a>
+                </div>
+            </div>
         </div>
 
         <div class="coins-grid" id="coins-container">
