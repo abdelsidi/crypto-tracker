@@ -613,36 +613,64 @@ updateUI = function(data) {
 
 // ==================== 📊 التحليلات ====================
 
-// جلب مؤشر الخوف والجشع
+// جلب مؤشر الخوف والجشع من API حقيقي
 async function fetchFearGreedIndex() {
     try {
-        // يمكن استخدام API حقيقي: https://api.alternative.me/fng/
-        const mockIndex = generateMockFearGreedIndex();
-        updateFearGreedUI(mockIndex);
+        const response = await fetch('https://api.alternative.me/fng/?limit=1');
+        const data = await response.json();
+        
+        if (data.data && data.data.length > 0) {
+            const indexData = data.data[0];
+            const value = parseInt(indexData.value);
+            
+            let classification, colorClass;
+            
+            if (value <= 20) {
+                classification = 'Extreme Fear';
+                colorClass = 'fear-greed-extreme-fear';
+            } else if (value <= 40) {
+                classification = 'Fear';
+                colorClass = 'fear-greed-fear';
+            } else if (value <= 60) {
+                classification = 'Neutral';
+                colorClass = 'fear-greed-neutral';
+            } else if (value <= 80) {
+                classification = 'Greed';
+                colorClass = 'fear-greed-greed';
+            } else {
+                classification = 'Extreme Greed';
+                colorClass = 'fear-greed-extreme-greed';
+            }
+            
+            updateFearGreedUI({ value, classification, colorClass });
+        }
     } catch (error) {
         console.error('Error fetching fear & greed index:', error);
+        // في حالة الخطأ، استخدم بيانات افتراضية
+        const mockIndex = generateMockFearGreedIndex();
+        updateFearGreedUI(mockIndex);
     }
 }
 
 function generateMockFearGreedIndex() {
-    // توليد قيمة عشوائية بين 0 و 100
+    // توليد قيمة عشوائية بين 0 و 100 كاحتياطي
     const value = Math.floor(Math.random() * 100);
     let classification, colorClass;
     
     if (value <= 20) {
-        classification = 'خوف شديد';
+        classification = 'Extreme Fear';
         colorClass = 'fear-greed-extreme-fear';
     } else if (value <= 40) {
-        classification = 'خوف';
+        classification = 'Fear';
         colorClass = 'fear-greed-fear';
     } else if (value <= 60) {
-        classification = 'محايد';
+        classification = 'Neutral';
         colorClass = 'fear-greed-neutral';
     } else if (value <= 80) {
-        classification = 'جشع';
+        classification = 'Greed';
         colorClass = 'fear-greed-greed';
     } else {
-        classification = 'جشع شديد';
+        classification = 'Extreme Greed';
         colorClass = 'fear-greed-extreme-greed';
     }
     
