@@ -158,10 +158,23 @@
             <div class="analysis-grid">
                 <div class="analysis-card">
                     <h3>📈 مؤشر الخوف والجشع</h3>
-                    <div id="fear-greed-index" class="fear-greed-meter">
-                        <div class="meter-circle">
-                            <span class="meter-value">--</span>
-                            <span class="meter-label">تحميل...</span>
+                    <div id="fear-greed-index" class="fear-greed-container">
+                        <div class="gauge-container">
+                            <div class="gauge-value">--</div>
+                            <div class="gauge-label">تحميل...</div>
+                            <div class="gauge-bar-container">
+                                <div class="gauge-bar-bg">
+                                    <div class="gauge-gradient"></div>
+                                </div>
+                                <div class="gauge-needle" id="gauge-needle"></div>
+                            </div>
+                            <div class="gauge-scale">
+                                <span>Extreme Fear</span>
+                                <span>Fear</span>
+                                <span>Neutral</span>
+                                <span>Greed</span>
+                                <span>Extreme Greed</span>
+                            </div>
                         </div>
                     </div>
                     <p class="analysis-desc">مؤشر يقيس مشاعر السوق بين الخوف والجشع</p>
