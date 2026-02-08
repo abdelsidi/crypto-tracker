@@ -1,12 +1,17 @@
 // 🚀 متتبع العملات الرقمية - Crypto Tracker
 
-const COINS = ['bitcoin', 'ethereum', 'binancecoin', 'cardano', 'solana'];
+const COINS = ['bitcoin', 'ethereum', 'binancecoin', 'cardano', 'solana', 'dogecoin', 'shiba-inu', 'pepe', 'floki', 'bonk'];
 const COIN_NAMES = {
-    bitcoin: { name: 'بيتكوين', symbol: 'BTC', icon: '₿' },
-    ethereum: { name: 'إيثيريوم', symbol: 'ETH', icon: 'Ξ' },
-    binancecoin: { name: 'بينانس', symbol: 'BNB', icon: '🔶' },
-    cardano: { name: 'كاردانو', symbol: 'ADA', icon: '₳' },
-    solana: { name: 'سولانا', symbol: 'SOL', icon: '◎' }
+    bitcoin: { name: 'بيتكوين', symbol: 'BTC', icon: '₿', type: 'major' },
+    ethereum: { name: 'إيثيريوم', symbol: 'ETH', icon: 'Ξ', type: 'major' },
+    binancecoin: { name: 'بينانس', symbol: 'BNB', icon: '🔶', type: 'major' },
+    cardano: { name: 'كاردانو', symbol: 'ADA', icon: '₳', type: 'major' },
+    solana: { name: 'سولانا', symbol: 'SOL', icon: '◎', type: 'major' },
+    dogecoin: { name: 'دوجكوين', symbol: 'DOGE', icon: '🐕', type: 'meme' },
+    'shiba-inu': { name: 'شيبا إينو', symbol: 'SHIB', icon: '🐕', type: 'meme' },
+    pepe: { name: 'بيبي', symbol: 'PEPE', icon: '🐸', type: 'meme' },
+    floki: { name: 'فلوكي', symbol: 'FLOKI', icon: '⚔️', type: 'meme' },
+    bonk: { name: 'بونك', symbol: 'BONK', icon: '🔨', type: 'meme' }
 };
 
 let priceHistory = {};
@@ -31,6 +36,7 @@ async function fetchPrices() {
         if (!response.ok) throw new Error('Failed to fetch');
         
         const data = await response.json();
+        currentPrices = data; // حفظ الأسعار للحاسبة
         updateUI(data);
         updateChart(data);
         checkAlerts(data);
@@ -80,13 +86,20 @@ function updateUI(data) {
 function createCoinCard(coinId, info) {
     const card = document.createElement('div');
     card.id = `card-${coinId}`;
-    card.className = 'coin-card';
+    // إضافة كلاس خاص للميم كوينز
+    const cardClass = info.type === 'meme' ? 'coin-card meme-coin' : 'coin-card';
+    card.className = cardClass;
+    
+    // إضافة شارة للميم كوينز
+    const memeBadge = info.type === 'meme' ? '<span class="meme-badge">🚀 MEME</span>' : '';
+    
     card.innerHTML = `
         <div class="coin-header">
             <div class="coin-icon">${info.icon}</div>
             <div class="coin-info">
                 <h3>${info.name}</h3>
                 <span class="coin-symbol">${info.symbol}</span>
+                ${memeBadge}
             </div>
         </div>
         <div class="coin-price" id="price-${coinId}">$---</div>
@@ -343,6 +356,73 @@ function toggleFloatingAd() {
     } else {
         icon.textContent = '−';
     }
+}
+
+// ==================== 🧮 حاسبة الربح والخسارة ====================
+
+let currentPrices = {};
+
+function updateCalcPrice() {
+    const coin = document.getElementById('calc-coin').value;
+    if (currentPrices[coin]) {
+        // يمكن استخدام السعر الحالي لاحقاً
+    }
+}
+
+function fillCurrentPrice() {
+    const coin = document.getElementById('calc-calc-coin').value;
+    if (currentPrices[coin] && currentPrices[coin].usd) {
+        document.getElementById('calc-sell-price').value = currentPrices[coin].usd;
+        // تأثير بصري
+        const input = document.getElementById('calc-sell-price');
+        input.style.borderColor = 'var(--neon-blue)';
+        setTimeout(() => {
+            input.style.borderColor = '';
+        }, 500);
+    } else {
+        alert('الرجاء الانتظار حتى يتم تحميل الأسعار');
+    }
+}
+
+function calculateProfit() {
+    const coin = document.getElementById('calc-coin').value;
+    const buyPrice = parseFloat(document.getElementById('calc-buy-price').value);
+    const sellPrice = parseFloat(document.getElementById('calc-sell-price').value);
+    const amount = parseFloat(document.getElementById('calc-amount').value) || 1;
+    
+    if (!buyPrice || !sellPrice || buyPrice <= 0 || sellPrice <= 0) {
+        alert('الرجاء إدخال أسعار صحيحة');
+        return;
+    }
+    
+    const investment = buyPrice * amount;
+    const revenue = sellPrice * amount;
+    const profit = revenue - investment;
+    const percent = ((profit / investment) * 100).toFixed(2);
+    
+    const resultDiv = document.getElementById('calc-result');
+    const isProfit = profit >= 0;
+    
+    resultDiv.className = 'calc-result show ' + (isProfit ? 'profit' : 'loss');
+    
+    resultDiv.innerHTML = `
+        <div class="calc-result-amount">
+            ${isProfit ? '+' : ''}${formatPrice(profit)} $
+        </div>
+        <div class="calc-result-percent">
+            ${isProfit ? '📈' : '📉'} ${isProfit ? '+' : ''}${percent}%
+        </div>
+        <div class="calc-result-details">
+            <div>استثمار: $${formatPrice(investment)}</div>
+            <div>عائد: $${formatPrice(revenue)}</div>
+            <div>الكمية: ${amount} ${COIN_NAMES[coin]?.symbol || coin.toUpperCase()}</div>
+        </div>
+    `;
+}
+
+// تحديث الأسعار للحاسبة
+function updateCurrentPrices(data) {
+    currentPrices = data;
 }
 
 // ==================== 📰 أخبار العملات الرقمية ====================
