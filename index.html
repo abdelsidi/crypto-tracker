@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 متتبع العملات الرقمية</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 متتبع العملات الرقمية</h1>
+            <p class="subtitle">أسعار العملات الرقمية مباشرة</p>
+            <div class="last-update">آخر تحديث: <span id="last-update">-</span></div>
+        </header>
+
+        <div class="coins-grid" id="coins-container">
+            <!-- سيتم ملؤها بالJavaScript -->
+        </div>
+
+        <div class="chart-section">
+            <h2>📈 الرسم البياني</h2>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+
+        <div class="alerts-section">
+            <h2>🔔 التنبيهات</h2>
+            <div class="alert-form">
+                <select id="alert-coin">
+                    <option value="bitcoin">Bitcoin</option>
+                    <option value="ethereum">Ethereum</option>
+                </select>
+                <input type="number" id="alert-price" placeholder="السعر المستهدف ($)">
+                <button onclick="addAlert()">إضافة تنبيه</button>
+            </div>
+            <div id="alerts-list"></div>
+        </div>
+
+        <div class="news-section">
+            <h2>📰 أخبار العملات الرقمية</h2>
+            <div class="news-tabs">
+                <button class="news-tab active" onclick="switchNewsTab('latest')">آخر الأخبار</button>
+                <button class="news-tab" onclick="switchNewsTab('binance')">Binance</button>
+                <button class="news-tab" onclick="switchNewsTab('bullish')">إيجابية</button>
+                <button class="news-tab" onclick="switchNewsTab('bearish')">سلبية</button>
+            </div>
+            <div id="news-container" class="news-container">
+                <div class="loading">جاري تحميل الأخبار...</div>
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            <h2>📊 التحليلات والتوقعات</h2>
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <h3>📈 مؤشر الخوف والجشع</h3>
+                    <div id="fear-greed-index" class="fear-greed-meter">
+                        <div class="meter-circle">
+                            <span class="meter-value">--</span>
+                            <span class="meter-label">تحميل...</span>
+                        </div>
+                    </div>
+                    <p class="analysis-desc">مؤشر يقيس مشاعر السوق بين الخوف والجشع</p>
+                </div>
+                
+                <div class="analysis-card">
+                    <h3>💰 تدفقات البيتكوين</h3>
+                    <div id="bitcoin-flows" class="flows-list">
+                        <div class="loading">جاري التحميل...</div>
+                    </div>
+                </div>
+                
+                <div class="analysis-card">
+                    <h3>🎯 توصيات التداول</h3>
+                    <div id="trading-signals" class="signals-list">
+                        <div class="loading">جاري التحميل...</div>
+                    </div>
+                </div>
+                
+                <div class="analysis-card wide">
+                    <h3>📊 تحليل السوق العام</h3>
+                    <div id="market-analysis" class="market-analysis-text">
+                        <div class="loading">جاري تحليل بيانات السوق...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>تم التطوير بواسطة جنكيت 📜</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
