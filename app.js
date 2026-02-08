@@ -370,7 +370,7 @@ function updateCalcPrice() {
 }
 
 function fillCurrentPrice() {
-    const coin = document.getElementById('calc-calc-coin').value;
+    const coin = document.getElementById('calc-coin').value;
     if (currentPrices[coin] && currentPrices[coin].usd) {
         document.getElementById('calc-sell-price').value = currentPrices[coin].usd;
         // تأثير بصري
