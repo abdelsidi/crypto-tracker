@@ -596,6 +596,121 @@ header h1 {
     box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
+/* ==================== 📢 شريط الأخبار المتحرك ==================== */
+
+.news-ticker {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(0, 249, 196, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+    border-radius: 12px;
+    margin: 15px 0;
+    overflow: hidden;
+    border: 1px solid rgba(0, 249, 196, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 249, 196, 0.1);
+}
+
+.ticker-label {
+    background: var(--gradient);
+    color: white;
+    padding: 12px 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.ticker-wrapper {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+}
+
+.ticker-content {
+    display: flex;
+    animation: ticker-scroll 40s linear infinite;
+    white-space: nowrap;
+    padding: 12px 0;
+}
+
+@keyframes ticker-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.ticker-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 30px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.ticker-item::after {
+    content: '•';
+    position: absolute;
+    right: 0;
+    color: var(--neon-blue);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.ticker-item:last-child::after {
+    display: none;
+}
+
+.ticker-item .crypto-icon {
+    margin-left: 8px;
+    font-size: 1.1rem;
+}
+
+.ticker-item .ticker-time {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    margin-right: 10px;
+}
+
+.ticker-item .ticker-change-up {
+    color: var(--up);
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.ticker-item .ticker-change-down {
+    color: var(--down);
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* إيقاف الحركة عند المرور */
+.news-ticker:hover .ticker-content {
+    animation-play-state: paused;
+}
+
+/* على الجوال */
+@media (max-width: 768px) {
+    .news-ticker {
+        margin: 10px 0;
+    }
+    
+    .ticker-label {
+        padding: 10px 12px;
+        font-size: 0.75rem;
+    }
+    
+    .ticker-item {
+        font-size: 0.8rem;
+        padding: 0 20px;
+    }
+}
+
 footer {
     text-align: center;
     padding: 30px 0;
