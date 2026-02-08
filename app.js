@@ -301,6 +301,35 @@ function showError(message) {
     console.error(message);
 }
 
+// ==================== 🪟 نافذة الإعلان المنبثقة ====================
+
+function openAdModal() {
+    const modal = document.getElementById('ad-modal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // منع التمرير
+}
+
+function closeAdModal() {
+    const modal = document.getElementById('ad-modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = ''; // إعادة التمرير
+}
+
+// إغلاق النافذة عند الضغط خارجها
+window.onclick = function(event) {
+    const modal = document.getElementById('ad-modal');
+    if (event.target === modal) {
+        closeAdModal();
+    }
+}
+
+// إغلاق النافذة بزر Escape
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeAdModal();
+    }
+});
+
 // ==================== 📰 أخبار العملات الرقمية ====================
 
 let currentNewsTab = 'latest';
