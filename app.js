@@ -651,11 +651,28 @@ function generateMockFearGreedIndex() {
 
 function updateFearGreedUI(data) {
     const container = document.getElementById('fear-greed-index');
-    container.className = `fear-greed-meter ${data.colorClass}`;
+    container.className = `fear-greed-container ${data.colorClass}`;
+    
+    // حساب موضع الإبرة (من 0% إلى 100%)
+    const needlePosition = data.value;
+    
     container.innerHTML = `
-        <div class="meter-circle">
-            <span class="meter-value">${data.value}</span>
-            <span class="meter-label">${data.classification}</span>
+        <div class="gauge-container">
+            <div class="gauge-value">${data.value}</div>
+            <div class="gauge-label">${data.classification}</div>
+            <div class="gauge-bar-container">
+                <div class="gauge-bar-bg">
+                    <div class="gauge-gradient"></div>
+                </div>
+                <div class="gauge-needle" style="left: ${needlePosition}%;"></div>
+            </div>
+            <div class="gauge-scale">
+                <span>Extreme Fear</span>
+                <span>Fear</span>
+                <span>Neutral</span>
+                <span>Greed</span>
+                <span>Extreme Greed</span>
+            </div>
         </div>
     `;
 }
