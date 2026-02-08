@@ -97,6 +97,39 @@
             <div id="alerts-list"></div>
         </div>
 
+        <div class="calculator-section">
+            <h2>🧮 حاسبة الربح والخسارة</h2>
+            <div class="calculator-card">
+                <div class="calc-inputs">
+                    <div class="calc-group">
+                        <label>العملة</label>
+                        <select id="calc-coin" onchange="updateCalcPrice()">
+                            <option value="bitcoin">بيتكوين (BTC)</option>
+                            <option value="ethereum">إيثيريوم (ETH)</option>
+                            <option value="dogecoin">دوجكوين (DOGE)</option>
+                            <option value="shiba-inu">شيبا إينو (SHIB)</option>
+                            <option value="pepe">بيبي (PEPE)</option>
+                        </select>
+                    </div>
+                    <div class="calc-group">
+                        <label>سعر الشراء ($)</label>
+                        <input type="number" id="calc-buy-price" placeholder="0.00" step="0.00000001">
+                    </div>
+                    <div class="calc-group">
+                        <label>سعر البيع ($)</label>
+                        <input type="number" id="calc-sell-price" placeholder="0.00" step="0.00000001">
+                        <button class="calc-current-btn" onclick="fillCurrentPrice()">استخدام السعر الحالي</button>
+                    </div>
+                    <div class="calc-group">
+                        <label>الكمية</label>
+                        <input type="number" id="calc-amount" placeholder="1.0" step="0.00000001">
+                    </div>
+                </div>
+                <button class="calc-btn" onclick="calculateProfit()">احسب</button>
+                <div id="calc-result" class="calc-result"></div>
+            </div>
+        </div>
+
         <div class="news-section">
             <h2>📰 أخبار العملات الرقمية</h2>
             <div class="news-tabs">
